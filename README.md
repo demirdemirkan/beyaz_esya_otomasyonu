@@ -1,11 +1,17 @@
 # beyaz_esya_otomasyonu
 Html, Php ve MySQL kullanılarak geliştirilmiş bir beyaz eşya otomasyon programıdır.
-Sistem, web tabanlıdır. Kullanıcılar Müşteri veya Yönetici Girişi seçenekleriyle girişyaparlar.
+
+Sistem, web tabanlıdır. 
+
+Kullanıcılar Müşteri veya Yönetici Girişi seçenekleriyle giriş yaparlar.
+
 Müşteri Girişi: Kullanıcı adı ve şifreyle giriş yapılır. Kayıt olmayan kullanıcılar kayıt
 ekranına yönlendirilir. Ürünleri listeleyebilir, sepete ekleyebilir, satın alma ve profil
 işlemlerini gerçekleştirebilir.
+
 Yönetici Girişi: Yetkili kullanıcı adı ve şifre ile giriş yapılır. Ürünlerin stok adetleri
 güncellenebilir.
+
 Çalışır hale getirmek için adımlar:
 1. XAMPP başlatılır.
 2. Dosyalar htdocs'a atılır.
