@@ -1,0 +1,30 @@
+<?php
+session_start();
+require_once 'db.php';
+
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: admin_login.php");
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['urun_id'], $_POST['sil_Adedi'])) {
+    $urun_id = (int)$_POST['urun_id'];
+    $silinecek = (int)$_POST['sil_Adedi'];
+
+    // Mevcut stok kontrolü
+    $stmt = $conn->prepare("SELECT Stok_Adedi FROM urunler WHERE UrunID = ?");
+    $stmt->bind_param("i", $urun_id);
+    $stmt->execute();
+    $stmt->bind_result($mevcut_stok);
+    $stmt->fetch();
+    $stmt->close();
+
+    if ($mevcut_stok >= $silinecek) {
+        $stmt = $conn->prepare("UPDATE urunler SET Stok_Adedi = Stok_Adedi - ? WHERE UrunID = ?");
+        $stmt->bind_param("ii", $silinecek, $urun_id);
+        $stmt->execute();
+    }
+}
+
+header("Location: admin_panel.php");
+exit;

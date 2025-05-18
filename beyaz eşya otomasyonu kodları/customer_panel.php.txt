@@ -1,0 +1,202 @@
+<?php
+session_start();
+require_once 'db.php';
+
+// Kullanıcı giriş yapmamışsa login sayfasına yönlendir
+if (!isset($_SESSION['musteri_id'])) {
+    header("Location: customer_login.php");
+    exit;
+}
+
+$musteri_id = $_SESSION['musteri_id'];
+
+// Sepet işlemleri için fonksiyonlar
+function sepet_listele($conn, $musteri_id) {
+    $stmt = $conn->prepare("SELECT s.sepet_id, u.UrunID, u.Marka, u.Model, u.Kategori, u.Fiyat, u.Stok_Adedi, s.adet 
+                            FROM sepet s JOIN urunler u ON s.urun_id = u.UrunID 
+                            WHERE s.musteri_id = ?");
+    $stmt->bind_param("i", $musteri_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $sepet = [];
+    while ($row = $result->fetch_assoc()) {
+        $sepet[] = $row;
+    }
+    return $sepet;
+}
+
+function sepetten_cikar($conn, $sepet_id, $musteri_id) {
+    $stmt = $conn->prepare("DELETE FROM sepet WHERE sepet_id = ? AND musteri_id = ?");
+    $stmt->bind_param("ii", $sepet_id, $musteri_id);
+    $stmt->execute();
+}
+
+function sepete_ekle($conn, $musteri_id, $urun_id, $adet = 1) {
+    // Önce ürün varsa adet artır
+    $stmt = $conn->prepare("SELECT adet FROM sepet WHERE musteri_id = ? AND urun_id = ?");
+    $stmt->bind_param("ii", $musteri_id, $urun_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $yeni_adet = $row['adet'] + $adet;
+        $stmt_update = $conn->prepare("UPDATE sepet SET adet = ? WHERE musteri_id = ? AND urun_id = ?");
+        $stmt_update->bind_param("iii", $yeni_adet, $musteri_id, $urun_id);
+        $stmt_update->execute();
+    } else {
+        $stmt_insert = $conn->prepare("INSERT INTO sepet (musteri_id, urun_id, adet) VALUES (?, ?, ?)");
+        $stmt_insert->bind_param("iii", $musteri_id, $urun_id, $adet);
+        $stmt_insert->execute();
+    }
+}
+
+function satin_al($conn, $musteri_id) {
+    $sepet = sepet_listele($conn, $musteri_id);
+    foreach ($sepet as $item) {
+        // Stoktan düş
+        $stmt_stok = $conn->prepare("UPDATE urunler SET Stok_Adedi = Stok_Adedi - ? WHERE UrunID = ? AND Stok_Adedi >= ?");
+        $stmt_stok->bind_param("iii", $item['adet'], $item['UrunID'], $item['adet']);
+        $stmt_stok->execute();
+
+        // Sepetten sil
+        $stmt_del = $conn->prepare("DELETE FROM sepet WHERE sepet_id = ?");
+        $stmt_del->bind_param("i", $item['sepet_id']);
+        $stmt_del->execute();
+    }
+}
+
+// İşlemler için POST kontrolü
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_POST['sepete_ekle'])) {
+        $urun_id = intval($_POST['urun_id']);
+        sepete_ekle($conn, $musteri_id, $urun_id);
+    } elseif (isset($_POST['sepetten_cikar'])) {
+        $sepet_id = intval($_POST['sepet_id']);
+        sepetten_cikar($conn, $sepet_id, $musteri_id);
+    } elseif (isset($_POST['satin_al'])) {
+        satin_al($conn, $musteri_id);
+    } elseif (isset($_POST['sifre_degistir'])) {
+    $yeni_sifre = trim($_POST['yeni_sifre']);
+    if (!empty($yeni_sifre)) {
+        // Direkt düz metin kaydet (güvenli değil!)
+        $stmt = $conn->prepare("UPDATE musteriler SET sifre = ? WHERE MusteriID = ?");
+        $stmt->bind_param("si", $yeni_sifre, $musteri_id);
+        $stmt->execute();
+        $mesaj = "Şifre başarıyla değiştirildi.";
+    } else {
+        $mesaj = "Yeni şifre boş olamaz!";
+    }
+}
+}
+
+// Kullanıcı bilgilerini çek
+$stmt_user = $conn->prepare("SELECT kullanici_adi, Adi, Soyadi FROM musteriler WHERE MusteriID = ?");
+$stmt_user->bind_param("i", $musteri_id);
+$stmt_user->execute();
+$result_user = $stmt_user->get_result();
+$kullanici = $result_user->fetch_assoc();
+
+// Ürünleri çek
+$urunler = [];
+$res = $conn->query("SELECT * FROM urunler");
+if ($res) {
+    while ($row = $res->fetch_assoc()) {
+        $urunler[] = $row;
+    }
+}
+
+// Sepeti çek
+$sepet = sepet_listele($conn, $musteri_id);
+
+?>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <title>Müşteri Paneli</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; margin:0; padding:0;}
+        header { background:#333; color:#fff; padding:15px 20px; display:flex; justify-content:space-between; align-items:center;}
+        header h1 { margin:0; font-size:24px;}
+        nav a { color:#fff; margin-left:20px; text-decoration:none; font-weight:bold; }
+        nav a:hover { text-decoration:underline; }
+        .container { padding:20px; }
+        .hidden { display:none; }
+        .urunler, .profil, .sepetim { background:#fff; padding:20px; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1); max-width:900px; margin:20px auto;}
+        table { width:100%; border-collapse:collapse; }
+        th, td { padding:10px; border-bottom:1px solid #ddd; text-align:left;}
+        th { background:#f0f0f0;}
+        button { background:#28a745; color:#fff; border:none; padding:7px 15px; border-radius:4px; cursor:pointer;}
+        button:hover { background:#218838; }
+        .error { color:red; }
+        .success { color:green; }
+        input[type="password"] { padding:6px; width:200px; }
+        form { margin-top:10px; }
+    </style>
+    <script>
+        function showSection(section) {
+            document.querySelector('.urunler').style.display = 'none';
+            document.querySelector('.profil').style.display = 'none';
+            document.querySelector('.sepetim').style.display = 'none';
+
+            document.querySelector('.' + section).style.display = 'block';
+        }
+
+        window.onload = function() {
+            showSection('urunler');
+        }
+    </script>
+</head>
+<body>
+<header>
+    <h1>Hoşgeldin, <?php echo htmlspecialchars($kullanici['kullanici_adi']); ?></h1>
+    <nav>
+        <a href="javascript:void(0)" onclick="showSection('urunler')">Ürünler</a>
+        <a href="javascript:void(0)" onclick="showSection('profil')">Profilim</a>
+        <a href="javascript:void(0)" onclick="showSection('sepetim')">Sepetim (<?php echo count($sepet); ?>)</a>
+        <a href="logout.php" style="color:#f33;">Çıkış Yap</a>
+    </nav>
+</header>
+
+<div class="container">
+
+<!-- Ürünler -->
+<div class="urunler">
+    <h2>Ürünler</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Marka</th>
+                <th>Model</th>
+                <th>Kategori</th>
+                <th>Fiyat</th>
+                <th>Stok</th>
+                <th>Garanti Süresi</th>
+                <th>Sepete Ekle</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach($urunler as $urun): ?>
+            <tr>
+                <td><?php echo htmlspecialchars($urun['Marka']); ?></td>
+                <td><?php echo htmlspecialchars($urun['Model']); ?></td>
+                <td><?php echo htmlspecialchars($urun['Kategori']); ?></td>
+                <td><?php echo number_format($urun['Fiyat'], 2, ',', '.'); ?> ₺</td>
+                <td><?php echo (int)$urun['Stok_Adedi']; ?></td>
+                <td><?php echo htmlspecialchars($urun['Garanti_Suresi']); ?></td>
+                <td>
+                    <?php if($urun['Stok_Adedi'] > 0): ?>
+                    <form method="POST" style="margin:0;">
+                        <input type="hidden" name="urun_id" value="<?php echo (int)$urun['UrunID']; ?>" />
+                        <button type="submit" name="sepete_ekle">Sepete Ekle</button>
+                    </form>
+                    <?php else: ?>
+                        Stokta Yok
+<?php endif; ?>
+</td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table>
+
+</div> <!-- Profil --> <div class="profil hidden" style="display:none;"> <h2>Profilim</h2> <p><strong>Kullanıcı Adı:</strong> <?php echo htmlspecialchars($kullanici['kullanici_adi']); ?></p> <p><strong>Adı Soyadı:</strong> <?php echo htmlspecialchars($kullanici['Adi']) . ' ' . htmlspecialchars($kullanici['Soyadi']); ?></p> <h3>Şifre Değiştir</h3> <?php if (isset($mesaj)): ?> <p class="<?php echo (strpos($mesaj, 'başarıyla')!==false) ? 'success' : 'error'; ?>"><?php echo htmlspecialchars($mesaj); ?></p> <?php endif; ?> <form method="POST"> <input type="password" name="yeni_sifre" placeholder="Yeni şifre" required /> <button type="submit" name="sifre_degistir">Değiştir</button> </form> </div> <!-- Sepetim --> <div class="sepetim hidden" style="display:none;"> <h2>Sepetim</h2> <?php if(count($sepet) === 0): ?> <p>Sepetiniz boş.</p> <?php else: ?> <form method="POST"> <table> <thead> <tr> <th>Marka</th> <th>Model</th> <th>Adet</th> <th>Fiyat (Birim)</th> <th>Toplam Fiyat</th> <th>Sepetten Çıkar</th> </tr> </thead> <tbody> <?php $toplam = 0; foreach($sepet as $item): $toplam += $item['Fiyat'] * $item['adet']; ?> <tr> <td><?php echo htmlspecialchars($item['Marka']); ?></td> <td><?php echo htmlspecialchars($item['Model']); ?></td> <td><?php echo (int)$item['adet']; ?></td> <td><?php echo number_format($item['Fiyat'], 2, ',', '.'); ?> ₺</td> <td><?php echo number_format($item['Fiyat'] * $item['adet'], 2, ',', '.'); ?> ₺</td> <td> <form method="POST" style="margin:0;"> <input type="hidden" name="sepet_id" value="<?php echo (int)$item['sepet_id']; ?>" /> <button type="submit" name="sepetten_cikar">Çıkar</button> </form> </td> </tr> <?php endforeach; ?> <tr> <td colspan="4" style="text-align:right;"><strong>Toplam:</strong></td> <td colspan="2"><strong><?php echo number_format($toplam, 2, ',', '.'); ?> ₺</strong></td> </tr> </tbody> </table> <button type="submit" name="satin_al" style="margin-top:10px; background:#007bff;">Satın Al</button> </form> <?php endif; ?> </div> </div> </body> </html>

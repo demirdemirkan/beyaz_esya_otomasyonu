@@ -1,0 +1,863 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Anamakine: 127.0.0.1
+-- Üretim Zamanı: 18 May 2025, 11:51:27
+-- Sunucu sürümü: 10.4.32-MariaDB
+-- PHP Sürümü: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Veritabanı: `mybeo`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `depolar`
+--
+
+CREATE TABLE `depolar` (
+  `DepoID` int(11) NOT NULL,
+  `DepoAdı` varchar(50) DEFAULT NULL,
+  `Konum` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Tablo döküm verisi `depolar`
+--
+
+INSERT INTO `depolar` (`DepoID`, `DepoAdı`, `Konum`) VALUES
+(1, 'Ana Depo', 'İstanbul, Beylikdüzü'),
+(2, 'Yedek Depo', 'İstanbul, Avcılar'),
+(3, 'Merkez Depo', 'Ankara, Çankaya'),
+(4, 'Bölgesel Depo', 'İzmir, Bornova'),
+(5, 'Dağıtım Deposu', 'Bursa, Osmangazi');
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `faturalar`
+--
+
+CREATE TABLE `faturalar` (
+  `FaturaID` int(11) NOT NULL,
+  `MusteriID` int(11) DEFAULT NULL,
+  `UrunID` int(11) DEFAULT NULL,
+  `FaturaTarihi` date DEFAULT NULL,
+  `ToplamTutar` decimal(10,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Tablo döküm verisi `faturalar`
+--
+
+INSERT INTO `faturalar` (`FaturaID`, `MusteriID`, `UrunID`, `FaturaTarihi`, `ToplamTutar`) VALUES
+(1, 109, 1015, '2025-01-18', 13999.00),
+(2, 106, 1008, '2024-06-03', 7599.00),
+(3, 100, 1017, '2025-07-26', 9999.00),
+(4, 109, 1003, '2024-08-16', 19999.00),
+(5, 110, 1023, '2024-01-24', 6990.00),
+(6, 130, 1011, '2025-02-25', 12499.00),
+(7, 106, 1027, '2024-02-19', 6999.00),
+(8, 126, 1018, '2025-10-30', 12499.00),
+(9, 106, 1009, '2025-11-14', 14500.00),
+(10, 129, 1009, '2024-01-31', 14500.00),
+(11, 101, 1011, '2025-09-28', 12499.00),
+(12, 102, 1004, '2024-08-29', 17999.00),
+(13, 115, 1027, '2024-08-30', 6999.00),
+(14, 110, 1025, '2024-06-27', 15800.00),
+(15, 132, 1024, '2025-09-05', 16900.00),
+(16, 102, 1003, '2025-06-17', 19999.00),
+(17, 124, 1012, '2025-02-24', 17999.00),
+(18, 128, 1028, '2025-02-10', 8700.00),
+(19, 103, 1008, '2024-08-07', 7599.00),
+(20, 116, 1020, '2025-12-30', 11200.00),
+(21, 105, 1029, '2025-02-19', 9400.00),
+(22, 117, 1017, '2024-09-16', 9999.00),
+(23, 111, 1010, '2024-02-10', 14999.00),
+(24, 128, 1012, '2024-03-03', 17999.00),
+(25, 106, 1026, '2025-04-13', 14990.00),
+(26, 116, 1004, '2024-05-07', 17999.00),
+(27, 122, 1025, '2024-03-13', 15800.00),
+(28, 129, 1025, '2024-11-13', 15800.00),
+(29, 132, 1005, '2025-03-18', 13700.00),
+(30, 113, 1012, '2025-07-03', 17999.00),
+(31, 108, 1013, '2024-03-27', 14900.00),
+(32, 120, 1016, '2025-10-11', 10999.00),
+(33, 125, 1000, '2024-05-19', 16999.90),
+(34, 117, 1026, '2024-09-04', 14990.00),
+(35, 113, 1016, '2025-04-06', 10999.00),
+(36, 132, 1006, '2024-10-22', 8999.00),
+(37, 114, 1013, '2024-01-15', 14900.00),
+(38, 118, 1019, '2025-12-07', 11750.00),
+(39, 126, 1021, '2024-11-18', 8990.00),
+(40, 111, 1002, '2025-06-02', 10499.00),
+(41, 130, 1014, '2024-07-20', 13450.00),
+(42, 107, 1020, '2025-10-25', 11200.00),
+(43, 127, 1002, '2024-06-08', 10499.00),
+(44, 108, 1019, '2024-12-12', 11750.00),
+(45, 105, 1015, '2025-11-27', 13999.00),
+(46, 120, 1010, '2025-02-15', 14999.00),
+(47, 112, 1028, '2025-04-20', 8700.00),
+(48, 123, 1022, '2024-10-03', 7450.00),
+(49, 124, 1001, '2025-03-07', 11300.00),
+(50, 129, 1006, '2024-07-02', 8999.00),
+(51, 119, 1029, '2025-09-01', 9400.00),
+(52, 121, 1007, '2025-01-09', 7999.00),
+(53, 101, 1022, '2024-02-17', 7450.00),
+(54, 122, 1005, '2025-03-25', 13700.00),
+(55, 110, 1023, '2024-03-31', 6990.00),
+(56, 103, 1021, '2025-12-15', 8990.00),
+(57, 106, 1014, '2024-07-09', 13450.00),
+(58, 128, 1007, '2024-04-12', 7999.00),
+(59, 125, 1024, '2025-06-10', 16900.00),
+(60, 115, 1001, '2024-09-19', 11300.00);
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `harcamalar`
+--
+
+CREATE TABLE `harcamalar` (
+  `harcama_id` int(11) NOT NULL,
+  `harcama_adi` varchar(50) DEFAULT NULL,
+  `harcama_miktari` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Tablo döküm verisi `harcamalar`
+--
+
+INSERT INTO `harcamalar` (`harcama_id`, `harcama_adi`, `harcama_miktari`) VALUES
+(1, 'Maaslar', '1658000'),
+(2, 'Tedarik', '12000000.00'),
+(3, 'Vergiler', '450000.00');
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `musteriler`
+--
+
+CREATE TABLE `musteriler` (
+  `MusteriID` int(11) NOT NULL,
+  `Adi` varchar(100) DEFAULT NULL,
+  `Soyadi` varchar(100) DEFAULT NULL,
+  `Telefon` varchar(15) DEFAULT NULL,
+  `Email` varchar(100) DEFAULT NULL,
+  `Adres` text DEFAULT NULL,
+  `KayitTarihi` date DEFAULT NULL,
+  `kullanici_adi` varchar(16) DEFAULT NULL,
+  `sifre` varchar(16) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Tablo döküm verisi `musteriler`
+--
+
+INSERT INTO `musteriler` (`MusteriID`, `Adi`, `Soyadi`, `Telefon`, `Email`, `Adres`, `KayitTarihi`, `kullanici_adi`, `sifre`) VALUES
+(100, 'Ahmet', 'Yılmaz', '0555 814 5178', 'ahmet.yilmaz@gmail.com', 'İstanbul, Kadıköy, Bağdat Caddesi No:25', '2024-07-09', 'ahmetyılmaz', 'ahmet42'),
+(101, 'Zeynep', 'Kara', '0555 204 1915', 'zeynep.kara@email.com', 'Ankara, Çankaya, Tunali Hilmi Caddesi No:32', '2025-12-23', 'zeynepkara', 'zeynep05'),
+(102, 'Mustafa', 'Demir', '0555 749 7991', 'mustafa.demir@hotmail.com', 'İzmir, Alsancak, Kıbrıs Şehitleri Caddesi No:40', '2025-06-28', 'mustafademir', 'mustafa19'),
+(103, 'Selin', 'Şahin', '0555 474 4383', 'selin.sahin@gmail.com', 'Bursa, Nilüfer, Görükle Mahallesi No:10', '2024-02-08', 'selinşahin', 'selin63'),
+(104, 'Emre', 'Öztürk', '0555 761 2558', 'emre.ozturk@yahoo.com', 'Antalya, Lara, Atatürk Caddesi No:58', '2024-01-15', 'emreöztürk', 'emre88'),
+(105, 'Murat', 'Çelik', '0555 632 5667', 'murat.celik@gmail.com', 'Adana, Seyhan, Atatürk Caddesi No:30', '2025-05-28', 'muratçelik', 'murat56'),
+(106, 'Ayşe', 'Köksal', '0555 377 5541', 'ayse.koksal@outlook.com', 'Konya, Meram, Mevlana Caddesi No:15', '2025-12-07', 'ayşeköksal', 'ayşe12'),
+(107, 'Cem', 'Aydın', '0555 376 4397', 'cem.aydin@hotmail.com', 'Gaziantep, Şehitkamil, Atatürk Caddesi No:12', '2024-07-06', 'cemaydın', 'cem77'),
+(108, 'Büşra', 'Öztürk', '0555 632 4256', 'busra.ozturk@gmail.com', 'Trabzon, Ortahisar, Atatürk Bulvarı No:3', '2024-12-26', 'büşraöztürk', 'büşra29'),
+(109, 'Serkan', 'Başar', '0555 925 1622', 'serkan.basar@yahoo.com', 'Eskişehir, Tepebaşı, Odunpazarı Caddesi No:5', '2024-03-14', 'serkanbaşar', 'serkan01'),
+(110, 'Eda', 'Turan', '0555 870 6134', 'eda.turan@gmail.com', 'Aydın, Efeler, Atatürk Caddesi No:12', '2024-08-08', 'edaturan', 'eda90'),
+(111, 'Caner', 'Gül', '0555 866 8230', 'caner.gul@email.com', 'Sakarya, Adapazarı, Çark Caddesi No:7', '2025-03-22', 'canergül', 'caner84'),
+(112, 'Aylin', 'Karahan', '0555 611 2311', 'aylin.karahan@hotmail.com', 'Kocaeli, İzmit, Cumhuriyet Caddesi No:10', '2025-01-18', 'aylinkarahan', 'aylin33'),
+(113, 'Fikret', 'Demirtaş', '0555 455 3245', 'fikret.demirtas@gmail.com', 'Mersin, Akdeniz, Cumhuriyet Bulvarı No:21', '2024-11-12', 'fikretdemirtaş', 'fikret21'),
+(114, 'Halil', 'Kılıç', '0555 789 3145', 'halil.kilic@yahoo.com', 'Manisa, Şehzadeler, Atatürk Bulvarı No:6', '2025-06-01', 'halilkılıç', 'halil77'),
+(115, 'Oya', 'Kara', '0555 234 5678', 'oya.kara@email.com', 'Kocaeli, Derince, Cumhuriyet Caddesi No:4', '2024-10-04', 'oyakara', 'oya14'),
+(116, 'Yusuf', 'Çelik', '0555 867 3541', 'yusuf.celik@hotmail.com', 'Samsun, Atakum, Atatürk Bulvarı No:8', '2025-02-20', 'yusufçelik', 'yusuf95'),
+(117, 'Elif', 'Can', '0555 120 9876', 'elif.can@gmail.com', 'Bolu, Merkez, İzzet Baysal Caddesi No:16', '2025-04-18', 'elifcan', '$2y$10$.i0n4/sb.'),
+(118, 'Fatma', 'Güler', '0555 278 6543', 'fatma.guler@outlook.com', 'Çorum, Merkez, Gazi Caddesi No:22', '2024-05-22', 'fatmagüler', 'fatma04'),
+(119, 'Baran', 'İpek', '0555 493 2987', 'baran.ipek@hotmail.com', 'Diyarbakır, Bağlar, Atatürk Bulvarı No:19', '2024-12-15', 'baranipek', 'baran22'),
+(120, 'Berk', 'Erdoğan', '0555 124 7896', 'berk.erdogan@gmail.com', 'Kayseri, Melikgazi, Kayseri Caddesi No:5', '2025-07-30', 'berkerdoğan', 'berk08'),
+(121, 'Vildan', 'Yalçın', '0555 342 7896', 'vildan.yalcin@gmail.com', 'Bursa, Osmangazi, Atatürk Caddesi No:18', '2025-09-25', 'vildanyalçın', 'vildan91'),
+(122, 'Mehmet', 'Sarı', '0555 565 2743', 'mehmet.sari@outlook.com', 'Balıkesir, Karesi, Şehitler Caddesi No:7', '2024-06-09', 'mehmetsarı', 'mehmet66'),
+(123, 'Merve', 'Kaya', '0555 287 7654', 'merve.kaya@email.com', 'Afyon, Merkez, Atatürk Bulvarı No:9', '2025-10-16', 'mervekaya', 'merve18'),
+(124, 'Rıza', 'Çetin', '0555 632 5555', 'riza.cetin@gmail.com', 'Çanakkale, Merkez, Cumhuriyet Caddesi No:4', '2024-02-23', 'rızaçetin', 'rıza32'),
+(125, 'İsmail', 'Şimşek', '0555 766 4938', 'ismail.simsek@gmail.com', 'Adıyaman, Merkez, Adıyaman Caddesi No:8', '2025-08-07', 'ismailşimşek', 'ismail50'),
+(126, 'Gizem', 'Koç', '0555 112 3245', 'gizem.koc@yahoo.com', 'Mardin, Artuklu, İpek Yolu Caddesi No:2', '2024-07-22', 'gizemkoç', 'gizem73'),
+(127, 'Emine', 'Yıldırım', '0555 337 4567', 'emine.yildirim@email.com', 'Aksaray, Merkez, Atatürk Bulvarı No:4', '2024-03-10', 'emineyıldırım', 'emine36'),
+(128, 'Samet', 'Korkmaz', '0555 422 3568', 'samet.korkmaz@hotmail.com', 'Nevşehir, Avanos, Cumhuriyet Caddesi No:3', '2025-05-03', 'sametkorkmaz', 'samet13'),
+(129, 'Leyla', 'Tuncer', '0555 588 7236', 'leyla.tuncer@outlook.com', 'Konya, Karatay, Mevlana Caddesi No:25', '2025-11-30', 'leylatuncer', 'leyla89'),
+(130, 'Berkay', 'Koçak', '0555 745 5682', 'berkay.kocak@gmail.com', 'Şanlıurfa, Eyyübiye, Atatürk Caddesi No:14', '2024-04-04', 'berkaykoçak', 'berkay07'),
+(131, 'Seda', 'Duran', '0555 743 6725', 'seda.duran@gmail.com', 'Kırşehir, Merkez, Cacabey Caddesi No:8', '2024-09-19', 'sedaduran', 'seda10'),
+(132, 'Hüseyin', 'Köksal', '0555 332 4789', 'huseyin.koksal@email.com', 'Bingöl, Merkez, Atatürk Bulvarı No:10', '2024-11-04', 'hüseyinköksal', 'hüseyin27'),
+(205, 'demir', 'demirkan', '5554441111', 'demir@gmail.com', 'izmit', NULL, 'demirdmk', 'demir'),
+(206, 'efe', 'yılmaz', '5554448877', 'efe@gmail.com', 'izmit', NULL, 'efe', 'efe'),
+(207, 'Yusuf', 'Çelebi', '5554441111', 'ycelebi04@gmail.com', 'izmit', NULL, 'ycelebi04', 'yusuf');
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `personel`
+--
+
+CREATE TABLE `personel` (
+  `PersonelID` int(11) NOT NULL,
+  `Ad` varchar(50) DEFAULT NULL,
+  `Soyad` varchar(50) DEFAULT NULL,
+  `Eposta` varchar(100) DEFAULT NULL,
+  `Telefon` varchar(20) DEFAULT NULL,
+  `Gorev` varchar(50) DEFAULT NULL,
+  `IseGirisTarihi` date DEFAULT NULL,
+  `Maas` decimal(10,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Tablo döküm verisi `personel`
+--
+
+INSERT INTO `personel` (`PersonelID`, `Ad`, `Soyad`, `Eposta`, `Telefon`, `Gorev`, `IseGirisTarihi`, `Maas`) VALUES
+(1, 'Emre', 'Aydın', 'emreaydin@gmail.com', '0553 123 4567', 'Satış Temsilcisi', '2024-01-15', 48000.00),
+(2, 'Deniz', 'Beyza', 'denizbeyza@gmail.com', '0542 987 6543', 'Muhasebeci', '2023-05-12', 67000.00),
+(3, 'Burak', 'Koç', 'burakkoc@gmail.com', '0533 555 2233', 'Teknik Servis Elemanı', '2024-09-01', 53000.00),
+(4, 'Ceren', 'Çolak', 'cerencolak@gmail.com', '0555 112 3344', 'Depo Görevlisi', '2022-11-03', 25000.00),
+(5, 'Murat', 'Erdem', 'muraterdem@gmail.com', '0505 444 5566', 'Mağaza Müdürü', '2021-08-20', 85000.00),
+(6, 'Seda', 'Gök', 'sedagok@gmail.com', '0546 777 8899', 'Satış Temsilcisi', '2023-04-28', 47000.00),
+(7, 'Fatih', 'Öztürk', 'fatihozturk@gmail.com', '0531 111 2222', 'Depo Görevlisi', '2024-06-10', 24000.00),
+(8, 'Mehmet', 'Savaş', 'mehmetsavast@gmail.com', '0554 333 4444', 'Teknik Servis Elemanı', '2023-12-01', 51000.00),
+(9, 'Beyza', 'Kurtuluş', 'beyzakurtul@gmail.com', '0536 789 6543', 'Satış Temsilcisi', '2022-07-14', 47000.00),
+(10, 'Tuba', 'Yavuz', 'tubayavuz@gmail.com', '0545 123 5678', 'Muhasebeci', '2023-02-20', 58000.00),
+(11, 'Ahmet', 'Yılmaz', 'ahmetyilmaz@gmail.com', '0551 345 6789', 'Teknik Servis Elemanı', '2023-11-15', 46000.00),
+(12, 'Elif', 'Öztürk', 'elifozturk@gmail.com', '0535 112 3344', 'Satış Temsilcisi', '2024-03-30', 49500.00),
+(13, 'Baran', 'Çelik', 'barancelik@gmail.com', '0533 400 5000', 'Depo Görevlisi', '2022-05-06', 26000.00),
+(14, 'Gülcan', 'Akdoğan', 'gulcankdogan@gmail.com', '0554 765 4321', 'Satış Temsilcisi', '2024-07-09', 48000.00),
+(15, 'Şenay', 'Cengiz', 'senaycengiz@gmail.com', '552 204 11 21', 'Maskot', '2024-05-05', 36000.00),
+(16, 'Zeynep', 'Kara', 'zeynekara@gmail.com', '0542 123 4567', 'Mağaza Müdürü', '2022-12-11', 72000.00),
+(17, 'Sinem', 'Güler', 'sinemguler@gmail.com', '0546 777 1234', 'Depo Görevlisi', '2023-03-22', 24000.00),
+(18, 'Serkan', 'Işık', 'serkanisik@gmail.com', '0506 345 6789', 'Satış Temsilcisi', '2024-01-12', 47000.00),
+(19, 'Merve', 'Demir', 'mervedemir@gmail.com', '0557 654 9876', 'Muhasebeci', '2024-04-05', 56000.00),
+(20, 'Erkan', 'Tekin', 'erkantekin@gmail.com', '0533 555 1122', 'Teknik Servis Elemanı', '2022-10-16', 48000.00),
+(21, 'Burcu', 'Güzel', 'burcuguzel@gmail.com', '0552 123 6789', 'Satış Temsilcisi', '2023-07-03', 49000.00),
+(22, 'Hakan', 'Şahin', 'hakansahin@gmail.com', '0521 400 6000', 'Depo Görevlisi', '2023-06-17', 25000.00),
+(23, 'Çağıl', 'Özdemir', 'cagilozdemir@gmail.com', '0505 667 7789', 'Satış Temsilcisi', '2022-11-24', 52000.00),
+(24, 'Fikret', 'Kaya', 'fikretkaya@gmail.com', '0534 888 9999', 'Mağaza Müdürü', '2024-05-10', 75000.00),
+(25, 'Pelin', 'Balkan', 'pelinbalkan@gmail.com', '0543 321 9870', 'Satış Temsilcisi', '2024-02-18', 48000.00),
+(26, 'Tuncay', 'Güneş', 'tuncaygunes@gmail.com', '0530 678 2233', 'Teknik Servis Elemanı', '2023-12-09', 50000.00),
+(27, 'Şeyma', 'Bayrak', 'seymabayrak@gmail.com', '0507 888 5555', 'Depo Görevlisi', '2023-03-10', 25500.00),
+(28, 'Alper', 'Köksal', 'alperkoksal@gmail.com', '0542 222 3333', 'Muhasebeci', '2022-07-01', 57000.00),
+(29, 'Gökhan', 'Uğur', 'gokhanugur@gmail.com', '0554 333 6677', 'Satış Temsilcisi', '2024-08-01', 48500.00),
+(30, 'Aylin', 'Sönmez', 'aylinsonmez@gmail.com', '0538 400 5555', 'Teknik Servis Elemanı', '2023-09-09', 47000.00),
+(31, 'Aşkım', 'Ertürk', 'askimerturk@gmail.com', '0548 777 9988', 'Depo Görevlisi', '2023-01-21', 27000.00),
+(32, 'Kemal', 'Dural', 'kemaldural@gmail.com', '0505 555 1234', 'Mağaza Müdürü', '2022-06-10', 77000.00),
+(33, 'Yusuf', 'İşcan', 'yusufiscan@gmail.com', '0532 444 8888', 'Satış Temsilcisi', '2024-10-20', 46000.00),
+(34, 'Berna', 'Altun', 'bernaaltun@gmail.com', '0545 222 1111', 'Teknik Servis Elemanı', '2023-07-25', 49000.00),
+(35, 'Kaan', 'Mert', 'kaanmert@gmail.com', '0551 444 5555', 'Depo Görevlisi', '2023-05-30', 24500.00);
+
+--
+-- Tetikleyiciler `personel`
+--
+DELIMITER $$
+CREATE TRIGGER `personel_alim` AFTER INSERT ON `personel` FOR EACH ROW update harcamalar
+set harcama_miktari= harcama_miktari + NEW.Maas
+where harcama_adi="Maaslar"
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `personel_cikar` AFTER DELETE ON `personel` FOR EACH ROW update harcamalar
+set harcama_miktari= harcama_miktari- OLD.Maas
+where harcama_adi="Maaslar"
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Görünüm yapısı durumu `personel_yoklama`
+-- (Asıl görünüm için aşağıya bakın)
+--
+CREATE TABLE `personel_yoklama` (
+`ad` varchar(50)
+,`soyad` varchar(50)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `satislar`
+--
+
+CREATE TABLE `satislar` (
+  `SatisID` int(11) NOT NULL,
+  `MusteriID` int(11) DEFAULT NULL,
+  `UrunID` int(11) DEFAULT NULL,
+  `SatisTarihi` date DEFAULT NULL,
+  `Adet` int(11) DEFAULT NULL,
+  `ToplamTutar` decimal(10,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Tablo döküm verisi `satislar`
+--
+
+INSERT INTO `satislar` (`SatisID`, `MusteriID`, `UrunID`, `SatisTarihi`, `Adet`, `ToplamTutar`) VALUES
+(10000, 109, 1015, '2025-01-18', 1, 13999.00),
+(10001, 106, 1008, '2024-06-03', 1, 7599.00),
+(10002, 100, 1017, '2025-07-26', 1, 9999.00),
+(10003, 109, 1003, '2024-08-16', 1, 19999.00),
+(10004, 110, 1023, '2024-01-24', 1, 6990.00),
+(10005, 130, 1011, '2025-02-25', 1, 12499.00),
+(10006, 106, 1027, '2024-02-19', 1, 6999.00),
+(10007, 126, 1018, '2025-10-30', 1, 12499.00),
+(10008, 106, 1009, '2025-11-14', 1, 14500.00),
+(10009, 129, 1009, '2024-01-31', 1, 14500.00),
+(10010, 101, 1011, '2025-09-28', 1, 12499.00),
+(10011, 102, 1004, '2024-08-29', 1, 17999.00),
+(10012, 115, 1027, '2024-08-30', 1, 6999.00),
+(10013, 110, 1025, '2024-06-27', 1, 15800.00),
+(10014, 132, 1024, '2025-09-05', 1, 16900.00),
+(10015, 102, 1003, '2025-06-17', 1, 19999.00),
+(10016, 124, 1012, '2025-02-24', 1, 17999.00),
+(10017, 128, 1028, '2025-02-10', 1, 8700.00),
+(10018, 103, 1008, '2024-08-07', 1, 7599.00),
+(10019, 116, 1020, '2025-12-30', 1, 11200.00),
+(10020, 105, 1029, '2025-02-19', 1, 9400.00),
+(10021, 117, 1017, '2024-09-16', 1, 9999.00),
+(10022, 111, 1010, '2024-02-10', 1, 14999.00),
+(10023, 128, 1012, '2024-03-03', 1, 17999.00),
+(10024, 106, 1026, '2025-04-13', 1, 14990.00),
+(10025, 116, 1004, '2024-05-07', 1, 17999.00),
+(10026, 122, 1025, '2024-03-13', 1, 15800.00),
+(10027, 129, 1025, '2024-11-13', 1, 15800.00),
+(10028, 132, 1005, '2025-03-18', 1, 13700.00),
+(10029, 113, 1012, '2025-07-03', 1, 17999.00),
+(10030, 108, 1013, '2024-03-27', 1, 14900.00),
+(10031, 120, 1016, '2025-10-11', 1, 10999.00),
+(10032, 125, 1000, '2024-05-19', 1, 16999.90),
+(10033, 117, 1026, '2024-09-04', 1, 14990.00),
+(10034, 113, 1016, '2025-04-06', 1, 10999.00),
+(10035, 132, 1006, '2024-10-22', 1, 8999.00),
+(10036, 114, 1013, '2024-01-15', 1, 14900.00),
+(10037, 118, 1019, '2025-12-07', 1, 11750.00),
+(10038, 126, 1021, '2024-11-18', 1, 8990.00),
+(10039, 111, 1002, '2025-06-02', 1, 10499.00),
+(10040, 130, 1014, '2024-07-20', 1, 13450.00),
+(10041, 107, 1020, '2025-10-25', 1, 11200.00),
+(10042, 127, 1002, '2024-06-08', 1, 10499.00),
+(10043, 108, 1019, '2024-12-12', 1, 11750.00),
+(10044, 105, 1015, '2025-11-27', 1, 13999.00),
+(10045, 120, 1010, '2025-02-15', 1, 14999.00),
+(10046, 112, 1028, '2025-04-20', 1, 8700.00),
+(10047, 123, 1022, '2024-10-03', 1, 7450.00),
+(10048, 124, 1001, '2025-03-07', 1, 11300.00),
+(10049, 129, 1006, '2024-07-02', 1, 8999.00),
+(10050, 119, 1029, '2025-09-01', 1, 9400.00),
+(10051, 121, 1007, '2025-01-09', 1, 7999.00),
+(10052, 101, 1022, '2024-02-17', 1, 7450.00),
+(10053, 122, 1005, '2025-03-25', 1, 13700.00),
+(10054, 110, 1023, '2024-03-31', 1, 6990.00),
+(10055, 103, 1021, '2025-12-15', 1, 8990.00),
+(10056, 106, 1014, '2024-07-09', 1, 13450.00),
+(10057, 128, 1007, '2024-04-12', 1, 7999.00),
+(10058, 125, 1024, '2025-06-10', 1, 16900.00),
+(10059, 115, 1001, '2024-09-19', 1, 11300.00);
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `sepet`
+--
+
+CREATE TABLE `sepet` (
+  `sepet_id` int(11) NOT NULL,
+  `musteri_id` int(11) DEFAULT NULL,
+  `urun_id` int(11) DEFAULT NULL,
+  `adet` int(11) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `servistalepleri`
+--
+
+CREATE TABLE `servistalepleri` (
+  `TalepID` int(11) NOT NULL,
+  `MusteriID` int(11) DEFAULT NULL,
+  `UrunID` int(11) DEFAULT NULL,
+  `TedarikciID` int(11) DEFAULT NULL,
+  `TalepTarihi` date DEFAULT NULL,
+  `ServisDurumu` varchar(50) DEFAULT NULL,
+  `ServisTarihi` date DEFAULT NULL,
+  `Aciklama` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Tablo döküm verisi `servistalepleri`
+--
+
+INSERT INTO `servistalepleri` (`TalepID`, `MusteriID`, `UrunID`, `TedarikciID`, `TalepTarihi`, `ServisDurumu`, `ServisTarihi`, `Aciklama`) VALUES
+(1, 106, 1027, 2, '2025-03-12', 'Tamamlandı', '2025-03-20', 'Ürün soğutmuyordu, kompresör değiştirildi.'),
+(2, 110, 1023, 1, '2025-04-05', 'Beklemede', NULL, 'Panel ekranı arızalı, teknik servis yönlendirilecek.'),
+(3, 128, 1012, 5, '2025-03-22', 'İptal', NULL, 'Müşteri talebi üzerine iptal edildi.'),
+(4, 103, 1008, 2, '2025-05-01', 'Tamamlandı', '2025-05-06', 'Cihaz çalışmıyordu, motor tamiri yapıldı.'),
+(5, 113, 1016, 3, '2025-04-14', 'Tamamlandı', '2025-04-19', 'Kapasite sorunu vardı, yazılım güncellendi.'),
+(6, 124, 1012, 4, '2025-03-29', 'Beklemede', NULL, 'Servis randevusu oluşturuldu, parça bekleniyor.'),
+(7, 117, 1017, 6, '2025-04-27', 'Tamamlandı', '2025-05-02', 'Kapak menteşesi değiştirildi.'),
+(8, 129, 1009, 9, '2025-01-10', 'İptal', NULL, 'Adres eksikliği nedeniyle servis iptal edildi.'),
+(9, 105, 1015, 8, '2025-05-02', 'Tamamlandı', '2025-05-07', 'Ekranda görüntü kaybı vardı, panel değiştirildi.'),
+(10, 126, 1021, 3, '2025-04-18', 'Tamamlandı', '2025-04-25', 'Fan sistemi yenilendi.'),
+(11, 132, 1024, 10, '2025-03-10', 'Beklemede', NULL, 'Müşteri arıza tespiti istedi.'),
+(12, 111, 1010, 7, '2025-02-11', 'Tamamlandı', '2025-02-17', 'Kumanda çalışmıyor, yeni kumanda teslim edildi.'),
+(13, 115, 1001, 5, '2025-01-29', 'Tamamlandı', '2025-02-03', 'Isıtmıyor şikayeti ile anakart değişimi yapıldı.'),
+(14, 101, 1011, 1, '2025-04-02', 'Beklemede', NULL, 'Servis için müşteriyle irtibat kurulamadı.'),
+(15, 120, 1016, 4, '2025-03-16', 'Tamamlandı', '2025-03-22', 'Sesli çalışma şikayeti vardı, rulman değiştirildi.');
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `stok`
+--
+
+CREATE TABLE `stok` (
+  `StokID` int(11) NOT NULL,
+  `UrunID` int(11) NOT NULL,
+  `DepoID` int(11) NOT NULL,
+  `TedarikciID` int(11) NOT NULL,
+  `Miktar` int(11) NOT NULL,
+  `GirisTarihi` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Tablo döküm verisi `stok`
+--
+
+INSERT INTO `stok` (`StokID`, `UrunID`, `DepoID`, `TedarikciID`, `Miktar`, `GirisTarihi`) VALUES
+(1, 1017, 3, 2, 13, '2025-03-19'),
+(2, 1003, 3, 2, 20, '2025-03-01'),
+(3, 1021, 1, 6, 23, '2025-04-10'),
+(4, 1006, 1, 10, 17, '2025-01-28'),
+(5, 1001, 1, 1, 25, '2025-01-10'),
+(6, 1014, 4, 6, 21, '2025-04-07'),
+(7, 1004, 4, 4, 18, '2025-03-15'),
+(8, 1011, 1, 6, 14, '2025-01-17'),
+(9, 1007, 2, 7, 22, '2025-02-19'),
+(10, 1002, 2, 9, 12, '2025-02-14'),
+(11, 1020, 5, 4, 14, '2025-04-15'),
+(12, 1012, 2, 3, 19, '2025-02-25'),
+(13, 1009, 4, 3, 11, '2025-04-01'),
+(14, 1024, 2, 5, 27, '2025-04-04'),
+(15, 1029, 5, 5, 20, '2025-02-27'),
+(16, 1027, 3, 6, 16, '2025-03-20'),
+(17, 1026, 4, 3, 13, '2025-04-12'),
+(18, 1028, 5, 4, 9, '2025-04-08'),
+(19, 1008, 3, 2, 15, '2025-03-23'),
+(20, 1019, 4, 9, 20, '2025-03-02'),
+(21, 1005, 5, 5, 30, '2025-04-03'),
+(22, 1000, 1, 8, 12, '2025-02-28'),
+(23, 1010, 5, 4, 26, '2025-02-11'),
+(24, 1005, 5, 5, 18, '2025-03-05'),
+(25, 1013, 3, 10, 9, '2025-03-10'),
+(26, 1009, 2, 3, 10, '2025-04-01'),
+(27, 1022, 3, 7, 17, '2025-04-06'),
+(28, 1023, 5, 1, 15, '2025-04-10'),
+(29, 1015, 5, 1, 16, '2025-01-05'),
+(30, 1016, 1, 8, 24, '2025-02-20'),
+(31, 1025, 4, 5, 18, '2025-04-14');
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `tedarikciler`
+--
+
+CREATE TABLE `tedarikciler` (
+  `TedarikciID` int(11) NOT NULL,
+  `TedarikciAdı` varchar(100) DEFAULT NULL,
+  `İletişimTelefonu` varchar(20) DEFAULT NULL,
+  `Eposta` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Tablo döküm verisi `tedarikciler`
+--
+
+INSERT INTO `tedarikciler` (`TedarikciID`, `TedarikciAdı`, `İletişimTelefonu`, `Eposta`) VALUES
+(1, 'Arçelik A.Ş.', '0212 444 0 888', 'info@arcelik.com.tr'),
+(2, 'Bosch Ev Aletleri', '0850 222 55 66', 'contact@bosch-home.com.tr'),
+(3, 'Vestel Ticaret A.Ş.', '444 1 900', 'info@vestel.com.tr'),
+(4, 'Samsung Electronics', '0216 444 77 88', 'contact@samsung.com'),
+(5, 'LG Electronics', '0216 442 51 00', 'info@lge.com'),
+(6, 'Grundig Elektronik', '0212 473 53 00', 'info@grundig.com.tr'),
+(7, 'Hoover Türkiye', '0212 444 80 80', 'info@hoover.com.tr'),
+(8, 'Regal Elektronik', '0850 222 33 44', 'contact@regal.com.tr'),
+(9, 'Electrolux A.Ş.', '0212 444 40 50', 'info@electrolux.com.tr'),
+(10, 'Silverline Elektronik', '0212 210 21 21', 'contact@silverline.com.tr');
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `urunler`
+--
+
+CREATE TABLE `urunler` (
+  `UrunID` int(11) NOT NULL,
+  `Marka` varchar(50) DEFAULT NULL,
+  `Model` varchar(50) DEFAULT NULL,
+  `Kategori` varchar(50) DEFAULT NULL,
+  `Fiyat` decimal(10,2) DEFAULT NULL,
+  `Stok_Adedi` int(11) DEFAULT NULL,
+  `Garanti_Suresi` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Tablo döküm verisi `urunler`
+--
+
+INSERT INTO `urunler` (`UrunID`, `Marka`, `Model`, `Kategori`, `Fiyat`, `Stok_Adedi`, `Garanti_Suresi`) VALUES
+(1000, 'Arçelik', '2486 NFY', 'Buzdolabı', 16999.90, 8, 24),
+(1001, 'Arçelik', '9103 YP', 'Çamaşır Makinesi', 11300.00, 5, 24),
+(1002, 'Arçelik', '6555 I', 'Bulaşık Makinesi', 10499.00, 7, 24),
+(1003, 'Bosch', 'Serie 6 KGN86AID2N', 'Buzdolabı', 19999.00, 5, 36),
+(1004, 'Bosch', 'Serie 8 WAX32K90TR', 'Çamaşır Makinesi', 17999.00, 4, 36),
+(1005, 'Bosch', 'SMI4HCS48E', 'Bulaşık Makinesi', 13700.00, 5, 36),
+(1006, 'Vestel', 'EKO NF520', 'Buzdolabı', 8999.00, 9, 24),
+(1007, 'Vestel', 'WM 9104 T', 'Çamaşır Makinesi', 7999.00, 10, 24),
+(1008, 'Vestel', 'BM 401 X', 'Bulaşık Makinesi', 7599.00, 8, 24),
+(1009, 'Samsung', 'WW90T554DAW', 'Çamaşır Makinesi', 14500.00, 5, 36),
+(1010, 'Samsung', 'RB34T600FSA', 'Buzdolabı', 14999.00, 6, 36),
+(1011, 'Samsung', 'DW60R7040FS', 'Bulaşık Makinesi', 12499.00, 4, 36),
+(1012, 'LG', 'GC-B509PLWL', 'Buzdolabı', 17999.00, 8, 36),
+(1013, 'LG', 'F4J6VYP2W', 'Çamaşır Makinesi', 14900.00, 5, 36),
+(1014, 'LG', 'DFB325HS', 'Bulaşık Makinesi', 13450.00, 4, 36),
+(1015, 'Grundig', 'GRNE 4482', 'Buzdolabı', 13999.00, 7, 24),
+(1016, 'Grundig', 'GWM 81242', 'Çamaşır Makinesi', 10999.00, 5, 24),
+(1017, 'Grundig', 'GDF 5201', 'Bulaşık Makinesi', 9999.00, 6, 24),
+(1018, 'Hoover', 'HOCE3T618EX', 'Buzdolabı', 12499.00, 4, 24),
+(1019, 'Hoover', 'HWP 610AMBC/1-S', 'Çamaşır Makinesi', 11750.00, 5, 24),
+(1020, 'Hoover', 'HDPN 4S603PX', 'Bulaşık Makinesi', 11200.00, 8, 24),
+(1021, 'Regal', 'RGL 4010', 'Buzdolabı', 8990.00, 8, 12),
+(1022, 'Regal', 'CM 9100', 'Çamaşır Makinesi', 7450.00, 9, 12),
+(1023, 'Regal', 'BM 3000', 'Bulaşık Makinesi', 6990.00, 10, 12),
+(1024, 'Electrolux', 'ENT8TE18S', 'Buzdolabı', 16900.00, 3, 36),
+(1025, 'Electrolux', 'EW7F3946LB', 'Çamaşır Makinesi', 15800.00, 6, 36),
+(1026, 'Electrolux', 'ESF5512LOX', 'Bulaşık Makinesi', 14990.00, 2, 36),
+(1027, 'Silverline', 'SLV 2400', 'Fırın', 6999.00, 6, 24),
+(1028, 'Silverline', 'SLW 9100', 'Çamaşır Makinesi', 8700.00, 4, 24),
+(1029, 'Silverline', 'SLD 5030', 'Bulaşık Makinesi', 9400.00, 3, 24);
+
+-- --------------------------------------------------------
+
+--
+-- Görünüm yapısı durumu `urunlerimiz`
+-- (Asıl görünüm için aşağıya bakın)
+--
+CREATE TABLE `urunlerimiz` (
+`kategori` varchar(50)
+,`marka` varchar(50)
+,`model` varchar(50)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `urun_yorumlari`
+--
+
+CREATE TABLE `urun_yorumlari` (
+  `YorumID` int(11) NOT NULL,
+  `MusteriID` int(11) DEFAULT NULL,
+  `UrunID` int(11) DEFAULT NULL,
+  `Yorum` text DEFAULT NULL,
+  `YorumTarihi` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Tablo döküm verisi `urun_yorumlari`
+--
+
+INSERT INTO `urun_yorumlari` (`YorumID`, `MusteriID`, `UrunID`, `Yorum`, `YorumTarihi`) VALUES
+(1, 109, 1015, 'Gerçekten harika bir ürün! Çok beğendim. Fiyatı da oldukça uygun.', '2025-01-18'),
+(2, 106, 1008, 'Ürün beklediğim gibi çıktı. Fiyatına göre oldukça kaliteli.', '2024-06-03'),
+(3, 100, 1017, 'Biraz pahalı ama kaliteyi de hissediyorsunuz. Tavsiye ederim.', '2025-07-26'),
+(4, 109, 1003, 'İyi bir ürün ama teslimat biraz gecikti. Yine de memnunum.', '2024-08-16'),
+(5, 110, 1023, 'Fiyatı biraz düşük ama işlevi harika. Beklentilerimi karşıladı.', '2024-01-24'),
+(6, 130, 1011, 'Ürün çok kullanışlı. Fiyat performansı çok iyi.', '2025-02-25'),
+(7, 106, 1027, 'Düşünerek aldım ve kesinlikle doğru karar verdiğimi düşünüyorum.', '2024-02-19'),
+(8, 126, 1018, 'Yüksek kaliteli bir ürün. Hem şık hem de çok kullanışlı.', '2025-10-30'),
+(9, 106, 1009, 'Daha önce aldım ve yine çok memnun kaldım. Tavsiye ederim.', '2025-11-14'),
+(10, 129, 1009, 'Ürün beklediğimden daha iyi çıktı. Kalitesi çok güzel.', '2024-01-31'),
+(11, 101, 1011, 'Harika bir ürün, fiyatı da çok uygun. Beklentimin çok üstünde.', '2025-09-28'),
+(12, 102, 1004, 'Çok beğendim, özellikle kullanım kolaylığı çok iyi.', '2024-08-29'),
+(13, 115, 1027, 'Fiyatına göre çok iyi bir ürün. Kesinlikle almanızı tavsiye ederim.', '2024-08-30'),
+(14, 110, 1025, 'Ürün çok kaliteli ve kullanımı çok kolay. Beğenerek kullanıyorum.', '2024-06-27'),
+(15, 132, 1024, 'Biraz pahalı olabilir, ama uzun süre kullanabileceğim bir ürün.', '2025-09-05'),
+(16, 102, 1003, 'Ürün beklediğim gibi çıktı, çok memnun kaldım.', '2025-06-17'),
+(17, 124, 1012, 'Fiyat performans açısından çok iyi bir ürün.', '2025-02-24'),
+(18, 128, 1028, 'Harika bir deneyim yaşadım, ürün çok kaliteli.', '2025-02-10'),
+(19, 103, 1008, 'Ürün gerçekten çok iyi ama fiyatı biraz daha uygun olabilirdi.', '2024-08-07'),
+(20, 116, 1020, 'Mükemmel! Birçok farklı işte kullanıyorum, çok memnunum.', '2025-12-30'),
+(21, 105, 1029, 'Ürün gayet kullanışlı ve fiyatı da çok uygun.', '2025-02-19'),
+(22, 117, 1017, 'Beklediğim gibi çıktı, çok memnunum.', '2024-09-16'),
+(23, 111, 1010, 'İyi bir ürün ama teslimat biraz geç oldu.', '2024-02-10'),
+(24, 128, 1012, 'Harika! Beklediğimden çok daha iyi bir ürün.', '2024-03-03'),
+(25, 106, 1026, 'Ürün gayet iyi ama ambalajı biraz daha dikkatli yapılabilir.', '2025-04-13'),
+(26, 116, 1004, 'Fiyatına göre çok iyi, kullanmaya devam edeceğim.', '2024-05-07'),
+(27, 122, 1025, 'Ürün harika, fiyatı biraz pahalı ama kalitesini hak ediyor.', '2024-03-13'),
+(28, 129, 1025, 'Çok memnun kaldım, kesinlikle tavsiye ederim.', '2024-11-13'),
+(29, 132, 1005, 'Fiyatına göre oldukça kaliteli. Çok memnunum.', '2025-03-18'),
+(30, 113, 1012, 'Beklediğimden çok daha iyi. Kesinlikle tavsiye ediyorum.', '2025-07-03');
+
+-- --------------------------------------------------------
+
+--
+-- Tablo için tablo yapısı `yoneticiler`
+--
+
+CREATE TABLE `yoneticiler` (
+  `yonetici_id` int(11) DEFAULT NULL,
+  `ad` varchar(50) DEFAULT NULL,
+  `soyad` varchar(50) DEFAULT NULL,
+  `kullanici_adi` varchar(16) DEFAULT NULL,
+  `sifre` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Tablo döküm verisi `yoneticiler`
+--
+
+INSERT INTO `yoneticiler` (`yonetici_id`, `ad`, `soyad`, `kullanici_adi`, `sifre`) VALUES
+(1, 'Demir', 'Demirkan', 'demirdemirkan', 'demir16'),
+(2, 'Efe', 'Yılmaz', 'efeyilmaz', 'efe19'),
+(3, 'Yusuf', 'Çelebi', 'yusufcelebi', 'yusuf41');
+
+-- --------------------------------------------------------
+
+--
+-- Görünüm yapısı `personel_yoklama`
+--
+DROP TABLE IF EXISTS `personel_yoklama`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `personel_yoklama`  AS SELECT `personel`.`Ad` AS `ad`, `personel`.`Soyad` AS `soyad` FROM `personel` ;
+
+-- --------------------------------------------------------
+
+--
+-- Görünüm yapısı `urunlerimiz`
+--
+DROP TABLE IF EXISTS `urunlerimiz`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `urunlerimiz`  AS SELECT `urunler`.`Kategori` AS `kategori`, `urunler`.`Marka` AS `marka`, `urunler`.`Model` AS `model` FROM `urunler` ;
+
+--
+-- Dökümü yapılmış tablolar için indeksler
+--
+
+--
+-- Tablo için indeksler `depolar`
+--
+ALTER TABLE `depolar`
+  ADD PRIMARY KEY (`DepoID`);
+
+--
+-- Tablo için indeksler `faturalar`
+--
+ALTER TABLE `faturalar`
+  ADD PRIMARY KEY (`FaturaID`),
+  ADD KEY `MusteriID` (`MusteriID`),
+  ADD KEY `UrunID` (`UrunID`);
+
+--
+-- Tablo için indeksler `harcamalar`
+--
+ALTER TABLE `harcamalar`
+  ADD PRIMARY KEY (`harcama_id`);
+
+--
+-- Tablo için indeksler `musteriler`
+--
+ALTER TABLE `musteriler`
+  ADD PRIMARY KEY (`MusteriID`),
+  ADD KEY `adi_soyadi_idx` (`Adi`,`Soyadi`);
+
+--
+-- Tablo için indeksler `personel`
+--
+ALTER TABLE `personel`
+  ADD PRIMARY KEY (`PersonelID`),
+  ADD KEY `ad_soyad_index` (`Ad`,`Soyad`);
+
+--
+-- Tablo için indeksler `satislar`
+--
+ALTER TABLE `satislar`
+  ADD PRIMARY KEY (`SatisID`),
+  ADD KEY `MusteriID` (`MusteriID`),
+  ADD KEY `UrunID` (`UrunID`);
+
+--
+-- Tablo için indeksler `sepet`
+--
+ALTER TABLE `sepet`
+  ADD PRIMARY KEY (`sepet_id`),
+  ADD KEY `musteri_id` (`musteri_id`),
+  ADD KEY `urun_id` (`urun_id`);
+
+--
+-- Tablo için indeksler `servistalepleri`
+--
+ALTER TABLE `servistalepleri`
+  ADD PRIMARY KEY (`TalepID`),
+  ADD KEY `MusteriID` (`MusteriID`),
+  ADD KEY `UrunID` (`UrunID`),
+  ADD KEY `TedarikciID` (`TedarikciID`);
+
+--
+-- Tablo için indeksler `stok`
+--
+ALTER TABLE `stok`
+  ADD PRIMARY KEY (`StokID`),
+  ADD KEY `UrunID` (`UrunID`),
+  ADD KEY `DepoID` (`DepoID`),
+  ADD KEY `TedarikciID` (`TedarikciID`);
+
+--
+-- Tablo için indeksler `tedarikciler`
+--
+ALTER TABLE `tedarikciler`
+  ADD PRIMARY KEY (`TedarikciID`);
+
+--
+-- Tablo için indeksler `urunler`
+--
+ALTER TABLE `urunler`
+  ADD PRIMARY KEY (`UrunID`),
+  ADD KEY `marka_model_index` (`Marka`,`Model`);
+
+--
+-- Tablo için indeksler `urun_yorumlari`
+--
+ALTER TABLE `urun_yorumlari`
+  ADD PRIMARY KEY (`YorumID`),
+  ADD KEY `MusteriID` (`MusteriID`),
+  ADD KEY `UrunID` (`UrunID`);
+
+--
+-- Dökümü yapılmış tablolar için AUTO_INCREMENT değeri
+--
+
+--
+-- Tablo için AUTO_INCREMENT değeri `depolar`
+--
+ALTER TABLE `depolar`
+  MODIFY `DepoID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- Tablo için AUTO_INCREMENT değeri `musteriler`
+--
+ALTER TABLE `musteriler`
+  MODIFY `MusteriID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=208;
+
+--
+-- Tablo için AUTO_INCREMENT değeri `personel`
+--
+ALTER TABLE `personel`
+  MODIFY `PersonelID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- Tablo için AUTO_INCREMENT değeri `satislar`
+--
+ALTER TABLE `satislar`
+  MODIFY `SatisID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10060;
+
+--
+-- Tablo için AUTO_INCREMENT değeri `sepet`
+--
+ALTER TABLE `sepet`
+  MODIFY `sepet_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- Tablo için AUTO_INCREMENT değeri `servistalepleri`
+--
+ALTER TABLE `servistalepleri`
+  MODIFY `TalepID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- Tablo için AUTO_INCREMENT değeri `stok`
+--
+ALTER TABLE `stok`
+  MODIFY `StokID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
+--
+-- Tablo için AUTO_INCREMENT değeri `tedarikciler`
+--
+ALTER TABLE `tedarikciler`
+  MODIFY `TedarikciID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- Tablo için AUTO_INCREMENT değeri `urunler`
+--
+ALTER TABLE `urunler`
+  MODIFY `UrunID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1030;
+
+--
+-- Dökümü yapılmış tablolar için kısıtlamalar
+--
+
+--
+-- Tablo kısıtlamaları `faturalar`
+--
+ALTER TABLE `faturalar`
+  ADD CONSTRAINT `faturalar_ibfk_1` FOREIGN KEY (`MusteriID`) REFERENCES `musteriler` (`MusteriID`),
+  ADD CONSTRAINT `faturalar_ibfk_2` FOREIGN KEY (`UrunID`) REFERENCES `urunler` (`UrunID`);
+
+--
+-- Tablo kısıtlamaları `satislar`
+--
+ALTER TABLE `satislar`
+  ADD CONSTRAINT `satislar_ibfk_1` FOREIGN KEY (`MusteriID`) REFERENCES `musteriler` (`MusteriID`),
+  ADD CONSTRAINT `satislar_ibfk_2` FOREIGN KEY (`UrunID`) REFERENCES `urunler` (`UrunID`);
+
+--
+-- Tablo kısıtlamaları `sepet`
+--
+ALTER TABLE `sepet`
+  ADD CONSTRAINT `sepet_ibfk_1` FOREIGN KEY (`musteri_id`) REFERENCES `musteriler` (`MusteriID`),
+  ADD CONSTRAINT `sepet_ibfk_2` FOREIGN KEY (`urun_id`) REFERENCES `urunler` (`UrunID`);
+
+--
+-- Tablo kısıtlamaları `servistalepleri`
+--
+ALTER TABLE `servistalepleri`
+  ADD CONSTRAINT `servistalepleri_ibfk_1` FOREIGN KEY (`MusteriID`) REFERENCES `musteriler` (`MusteriID`),
+  ADD CONSTRAINT `servistalepleri_ibfk_2` FOREIGN KEY (`UrunID`) REFERENCES `urunler` (`UrunID`),
+  ADD CONSTRAINT `servistalepleri_ibfk_3` FOREIGN KEY (`TedarikciID`) REFERENCES `tedarikciler` (`TedarikciID`);
+
+--
+-- Tablo kısıtlamaları `stok`
+--
+ALTER TABLE `stok`
+  ADD CONSTRAINT `stok_ibfk_1` FOREIGN KEY (`UrunID`) REFERENCES `urunler` (`UrunID`),
+  ADD CONSTRAINT `stok_ibfk_2` FOREIGN KEY (`DepoID`) REFERENCES `depolar` (`DepoID`),
+  ADD CONSTRAINT `stok_ibfk_3` FOREIGN KEY (`TedarikciID`) REFERENCES `tedarikciler` (`TedarikciID`);
+
+--
+-- Tablo kısıtlamaları `urun_yorumlari`
+--
+ALTER TABLE `urun_yorumlari`
+  ADD CONSTRAINT `urun_yorumlari_ibfk_1` FOREIGN KEY (`MusteriID`) REFERENCES `musteriler` (`MusteriID`),
+  ADD CONSTRAINT `urun_yorumlari_ibfk_2` FOREIGN KEY (`UrunID`) REFERENCES `urunler` (`UrunID`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

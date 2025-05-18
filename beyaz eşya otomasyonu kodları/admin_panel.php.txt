@@ -1,0 +1,99 @@
+<?php
+session_start();
+require_once 'db.php';
+
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: admin_login.php");
+    exit;
+}
+
+$stmt = $conn->prepare("SELECT * FROM urunler");
+$stmt->execute();
+$result = $stmt->get_result();
+$urunler = $result->fetch_all(MYSQLI_ASSOC);
+?>
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Paneli</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+        .container {
+            width: 90%;
+            margin: auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        .btn {
+            padding: 5px 10px;
+            margin: 2px;
+        }
+        .logout {
+            float: right;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Admin Paneli</h1>
+    <a href="admin_logout.php" class="btn logout">Çıkış Yap</a>
+    <table>
+        <tr>
+            <th>Marka</th>
+            <th>Model</th>
+            <th>Kategori</th>
+            <th>Fiyat</th>
+            <th>Stok</th>
+            <th>Garanti Süresi</th>
+            <th>İşlemler</th>
+        </tr>
+        <?php foreach ($urunler as $urun): ?>
+            <tr>
+                <td><?= htmlspecialchars($urun['Marka']) ?></td>
+                <td><?= htmlspecialchars($urun['Model']) ?></td>
+                <td><?= htmlspecialchars($urun['Kategori']) ?></td>
+                <td><?= htmlspecialchars($urun['Fiyat']) ?>₺</td>
+                <td><?= htmlspecialchars($urun['Stok_Adedi']) ?></td>
+                <td><?= htmlspecialchars($urun['Garanti_Suresi']) ?> Ay</td>
+                <td>
+                    <form method="post" action="stok_ekle.php" style="display:inline;">
+                        <input type="hidden" name="urun_id" value="<?= $urun['UrunID'] ?>">
+                        <input type="number" name="eklenecek_stok" min="1" required>
+                        <button class="btn" type="submit">Stoğa Ekle</button>
+                    </form>
+                    <form method="post" action="stok_sil.php" style="display:inline;">
+                        <input type="hidden" name="urun_id" value="<?= $urun['UrunID'] ?>">
+                        <input type="number" name="sil_Adedi" min="1" required>
+                        <button class="btn" type="submit">Stoktan Sil</button>
+                    </form>
+                    <form method="post" action="stok_kaydet.php" style="display:inline;">
+                        <input type="hidden" name="urun_id" value="<?= $urun['UrunID'] ?>">
+                        <button class="btn" type="submit">Kaydet</button>
+                    </form>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+</div>
+</body>
+</html>

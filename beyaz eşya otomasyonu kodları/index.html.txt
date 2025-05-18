@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giriş Seçimi</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #7798a0, #5e686a);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .role-container {
+      background: rgb(238, 234, 234);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 320px;
+    }
+
+    .role-container h2 {
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .role-container a {
+      display: block;
+      padding: 15px;
+      margin: 15px 0;
+      background-color: #1976d2;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .role-container a:hover {
+      background-color: #0d47a1;
+    }
+
+    .role-container a.customer {
+      background-color: #43a047;
+    }
+
+    .role-container a.customer:hover {
+      background-color: #2e7d32;
+    }
+  </style>
+</head>
+<body>
+  <div class="role-container">
+    <h2>Giriş Türü Seçin</h2>
+    <a href="admin_login.php">Yönetici Girişi</a>
+    <a href="customer_login.php" class="customer">Müşteri Girişi</a>
+  </div>
+</body>
+</html>

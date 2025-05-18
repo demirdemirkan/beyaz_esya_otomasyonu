@@ -1,0 +1,95 @@
+<?php
+session_start();
+require_once 'db.php'; // veritabanı bağlantısı
+$error = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $kullanici_adi = $_POST['kullanici_adi'] ?? '';
+    $sifre = $_POST['sifre'] ?? '';
+
+    if ($kullanici_adi && $sifre) {
+        $stmt = $conn->prepare("SELECT * FROM musteriler WHERE kullanici_adi = ? LIMIT 1");
+        $stmt->bind_param("s", $kullanici_adi);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result && $result->num_rows === 1) {
+            $user = $result->fetch_assoc();
+
+            // Şifre kontrolü (şifreler hashlenmiş olmalı, değilse direk karşılaştır)
+            if ($sifre === $user['sifre']) {
+                $_SESSION['musteri_id'] = $user['MusteriID'];
+                $_SESSION['kullanici_adi'] = $user['kullanici_adi'];
+                $_SESSION['adi_soyadi'] = $user['Adi'] . ' ' . $user['Soyadi'];
+                header("Location: customer_panel.php");
+                exit;
+            } else {
+                $error = "Hatalı kullanıcı adı veya şifre.";
+            }
+        } else {
+            $error = "Hatalı kullanıcı adı veya şifre.";
+        }
+        $stmt->close();
+    } else {
+        $error = "Lütfen kullanıcı adı ve şifre girin.";
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Müşteri Girişi - Beyaz Eşya Otomasyonu</title>
+  <style>
+    * {
+      box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif;
+    }
+    body {
+      background: #f2f2f2; display: flex; justify-content: center; align-items: center; height: 100vh;
+    }
+    .login-container {
+      background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 0 15px rgba(0,0,0,0.1); width: 360px; text-align: center;
+    }
+    .login-container h2 {
+      margin-bottom: 25px; color: #333;
+    }
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+      width: 100%; padding: 12px; margin: 10px 0 20px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px;
+    }
+    .login-container input[type="submit"] {
+      background: #007bff; color: white; border: none; padding: 12px; border-radius: 8px; width: 100%; cursor: pointer; font-size: 16px; transition: background 0.3s;
+    }
+    .login-container input[type="submit"]:hover {
+      background: #0056b3;
+    }
+    .login-container p {
+      margin-top: 15px; font-size: 14px;
+    }
+    .login-container a {
+      color: #007bff; text-decoration: none;
+    }
+    .login-container a:hover {
+      text-decoration: underline;
+    }
+    .error {
+      background: #f8d7da; color: #842029; padding: 10px; border-radius: 8px; margin-bottom: 20px; font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Müşteri Girişi</h2>
+    <?php if ($error): ?>
+      <div class="error"><?= htmlspecialchars($error) ?></div>
+    <?php endif; ?>
+    <form action="" method="POST">
+      <input type="text" name="kullanici_adi" placeholder="Kullanıcı Adı" required />
+      <input type="password" name="sifre" placeholder="Şifre" required />
+      <input type="submit" value="Giriş Yap" />
+    </form>
+    <p>Hesabınız yok mu? <a href="register.php">Kayıt Ol</a></p>
+    <p><a href="index.html">← Geri</a></p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<?php
+session_start();
+require_once 'db.php';
+
+header('Content-Type: application/json');
+
+if (!isset($_SESSION['musteri_id'])) {
+    echo json_encode(['success' => false, 'message' => 'Oturum bulunamadı.']);
+    exit;
+}
+
+$musteri_id = $_SESSION['musteri_id'];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['urun_id'])) {
+    $urun_id = $_POST['urun_id'];
+
+    $sql = "DELETE FROM sepet WHERE musteri_id = ? AND urun_id = ?";
+    $stmt = $conn->prepare($sql);
+    $success = $stmt->execute([$musteri_id, $urun_id]);
+
+    if ($success) {
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Silme işlemi başarısız.']);
+    }
+} else {
+    echo json_encode(['success' => false, 'message' => 'Geçersiz istek.']);
+}
+?>

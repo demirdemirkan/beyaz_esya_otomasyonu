@@ -1,0 +1,99 @@
+<?php
+require_once 'db.php';
+
+$mesaj = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $kullanici_adi = trim($_POST['kullanici_adi']);
+    $sifre = trim($_POST['sifre']);
+    $adi = trim($_POST['adi']);
+    $soyadi = trim($_POST['soyadi']);
+    $email = trim($_POST['email']);
+    $telefon = trim($_POST['telefon']);
+    $adres = trim($_POST['adres']);
+
+    if (!empty($kullanici_adi) && !empty($sifre) && !empty($adi) && !empty($soyadi) && !empty($email) && !empty($telefon) && !empty($adres)) {
+        $stmt = $conn->prepare("INSERT INTO musteriler (kullanici_adi, sifre, Adi, Soyadi, Email, Telefon, Adres) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssss", $kullanici_adi, $sifre, $adi, $soyadi, $email, $telefon, $adres);
+
+        if ($stmt->execute()) {
+            header("Location: customer_login.php");
+            exit;
+        } else {
+            $mesaj = "<p style='color: red;'>Kayıt başarısız: " . $stmt->error . "</p>";
+        }
+
+        $stmt->close();
+    } else {
+        $mesaj = "<p style='color: red;'>Lütfen tüm alanları doldurun.</p>";
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Kayıt Ol</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f5f5, #ddd);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            width: 350px;
+        }
+        .form-container h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form-container input,
+        .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+        .form-container input[type="submit"] {
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .form-container input[type="submit"]:hover {
+            background-color: #4cae4c;
+        }
+        .mesaj {
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h2>Kayıt Ol</h2>
+    <form method="post">
+        <input type="text" name="kullanici_adi" placeholder="Kullanıcı Adı" required>
+        <input type="password" name="sifre" placeholder="Şifre" required>
+        <input type="text" name="adi" placeholder="Ad" required>
+        <input type="text" name="soyadi" placeholder="Soyad" required>
+        <input type="email" name="email" placeholder="E-posta" required>
+        <input type="text" name="telefon" placeholder="Telefon" required>
+        <textarea name="adres" placeholder="Adres" required></textarea>
+        <input type="submit" value="Kayıt Ol">
+    </form>
+    <div class="mesaj"><?php echo $mesaj; ?></div>
+</div>
+</body>
+</html>

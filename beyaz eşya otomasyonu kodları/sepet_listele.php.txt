@@ -1,0 +1,25 @@
+<?php
+session_start();
+require_once 'db.php';
+
+header('Content-Type: application/json');
+
+if (!isset($_SESSION['musteri_id'])) {
+    echo json_encode([]);
+    exit;
+}
+
+$musteri_id = $_SESSION['musteri_id'];
+
+// Müşterinin sepetindeki ürünleri çek
+$sql = "SELECT u.Marka, u.Model, u.Fiyat, s.adet
+        FROM sepet s
+        JOIN urunler u ON s.urun_id = u.UrunID
+        WHERE s.musteri_id = ?";
+
+$stmt = $conn->prepare($sql);
+$stmt->execute([$musteri_id]);
+$sepet = $stmt->fetch(PDO::FETCH_ASSOC);
+
+echo json_encode($sepet);
+?>

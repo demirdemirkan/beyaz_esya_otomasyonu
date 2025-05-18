@@ -1,0 +1,103 @@
+<?php
+ob_start();
+session_start();
+require_once 'db.php';
+
+$hata = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $kullanici_adi = trim($_POST['kullanici_adi'] ?? '');
+    $sifre = trim($_POST['sifre'] ?? '');
+
+    $stmt = $conn->prepare("SELECT * FROM yoneticiler WHERE kullanici_adi = ?");
+    $stmt->bind_param("s", $kullanici_adi);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result && $result->num_rows === 1) {
+        $user = $result->fetch_assoc();
+
+        if ($sifre === $user['sifre']) {
+            $_SESSION['admin_id'] = $user['id'] ?? $user['yonetici_id'] ?? null;
+            $_SESSION['admin_kullanici_adi'] = $user['kullanici_adi'];
+
+            header("Location: admin_panel.php");
+            exit;
+        } else {
+            $hata = "Hatalı şifre.";
+        }
+    } else {
+        $hata = "Kullanıcı bulunamadı.";
+    }
+
+    $stmt->close();
+}
+?>
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Giriş</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #f0f0f0, #dbe9f4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .login-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 300px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h2>Admin Giriş</h2>
+    <?php if ($hata): ?>
+        <p class="error"><?= htmlspecialchars($hata) ?></p>
+    <?php endif; ?>
+    <form method="POST">
+        <input type="text" name="kullanici_adi" placeholder="Kullanıcı Adı" required>
+        <input type="password" name="sifre" placeholder="Şifre" required>
+        <input type="submit" value="Giriş Yap">
+    </form>
+    <p style="text-align:center; margin-top:10px;"><a href="index.html">← Geri</a></p>
+</div>
+</body>
+</html>
+
+<?php ob_end_flush(); ?>
